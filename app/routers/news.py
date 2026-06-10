@@ -1,16 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
+from app.schemas import CreateNews, News
 
 router = APIRouter(
     prefix="/news",
     tags=["news"]
 )
 
-@router.get("/")
+@router.get("/", response_model=News, status_code=status.HTTP_200_OK)
 async def get_news():
     """
     Получение всех новостей
     """
-    ...
 
 @router.get("/{news_id}")
 async def get_news_id(news_id: int):
