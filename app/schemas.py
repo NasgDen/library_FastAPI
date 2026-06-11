@@ -16,5 +16,5 @@ class News(BaseModel):
     id: int = Field(..., description="ID новости")
     title: str = Field(..., min_length=3, max_length=100, description="Название новости")
     content: str = Field(..., description="Содержание новости")
-    created_at: datetime = Field(..., default_factory=datetime.now, description="Дата и время создания новости")
-    updated_at: datetime = Field(..., default_factory=datetime.now, description="Дата и время изменения новости")
+    created_at: datetime = Field(..., description="Дата и время создания новости")
+    updated_at: datetime = Field(..., description="Дата и время изменения новости")
