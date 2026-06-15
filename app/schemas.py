@@ -16,5 +16,6 @@ class News(BaseModel):
     id: int = Field(..., description="ID новости")
     title: str = Field(..., min_length=3, max_length=100, description="Название новости")
     content: str = Field(..., description="Содержание новости")
+    is_active: bool = Field(..., description="Активная новость")
     created_at: datetime = Field(..., description="Дата и время создания новости")
     updated_at: datetime = Field(..., description="Дата и время изменения новости")
