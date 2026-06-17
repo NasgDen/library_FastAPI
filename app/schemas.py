@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 class CreateNews(BaseModel):
     """
@@ -19,3 +19,22 @@ class News(BaseModel):
     is_active: bool = Field(..., description="Активная новость")
     created_at: datetime = Field(..., description="Дата и время создания новости")
     updated_at: datetime = Field(..., description="Дата и время изменения новости")
+
+class UserCreate(BaseModel):
+    """
+    Класс для валидации полей для создания, изменения модели пользователь
+    """
+    user_name:str = Field(..., min_length=3, max_length=20, description="Имя пользователя")
+    email: EmailStr = Field(..., description="Электронная почта пользователя")
+    password: str = Field(..., description="Пароль пользователя")
+
+    model_config = ConfigDict(from_attributes=True)
+
+class User(UserCreate):
+    """
+    Класс для валидации полей для модели пользователь
+    """
+    id: int = Field(..., description="ID пользователя")
+    is_active: bool = Field(..., description="Активный пользователь")
+    created_at: datetime = Field(..., description="Дата и время создания пользователя")
+    updated_at: datetime = Field(..., description="Дата и время изменения пользователя")

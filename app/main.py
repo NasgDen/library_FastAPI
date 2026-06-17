@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from app.routers.news import router
+from app.routers import news, users
 
 app = FastAPI(
     title="API для сайта библиотекарей"
 )
 
-app.include_router(router)
+app.include_router(news.router)
+app.include_router(users.router)
 
 @app.get("/")
 async def wellcome():
