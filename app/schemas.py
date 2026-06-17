@@ -34,7 +34,8 @@ class User(UserCreate):
     """
     Класс для валидации полей для модели пользователь
     """
-    id: int = Field(..., description="ID пользователя")
-    is_active: bool = Field(..., description="Активный пользователь")
-    created_at: datetime = Field(..., description="Дата и время создания пользователя")
-    updated_at: datetime = Field(..., description="Дата и время изменения пользователя")
+    id: int = Field(description="ID пользователя")
+    is_active: bool = Field(description="Активный пользователь")
+    role: str = Field(default="user", pattern="^(user|superuser|admin)$", description="Роль: 'user', 'admin', 'superuser'")
+    created_at: datetime = Field(description="Дата и время создания пользователя")
+    updated_at: datetime = Field(description="Дата и время изменения пользователя")

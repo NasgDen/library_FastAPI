@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from app.routers.news import router
 from app.routers import news, users
 
 app = FastAPI(

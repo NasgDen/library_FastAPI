@@ -1,6 +1,8 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.auth import hash_password
 from app.schemas import UserCreate, User as UserSchema
 from app.models.users import User as UserModel
 from app.db_depends import get_async_db
@@ -36,18 +38,22 @@ async def get_user_id(user_id: int, db: AsyncSession = Depends(get_async_db)):
     return user
 
 @router.post("/", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
-async def create_news(user: UserCreate, db: AsyncSession = Depends(get_async_db)):
+async def create_user(user: UserCreate, db: AsyncSession = Depends(get_async_db)):
     """
     Создание пользователя
     """
-    db_user =UserModel(**user.model_dump())
+    db_user = UserModel(
+        user_name=user.user_name,
+        email=user.email,
+        password=hash_password(user.password),
+    )
     db.add(db_user)
     await db.commit()
     await db.refresh(db_user)
     return db_user
 
 @router.put("/{user_id}", response_model=UserSchema, status_code=status.HTTP_200_OK)
-async def change_news(user_id: int, user: UserCreate, db: AsyncSession = Depends(get_async_db)):
+async def change_user(user_id: int, user: UserCreate, db: AsyncSession = Depends(get_async_db)):
     """
     Редактирование пользователя
     """
@@ -69,7 +75,7 @@ async def change_news(user_id: int, user: UserCreate, db: AsyncSession = Depends
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_200_OK)
-async def delete_news(user_id: int, db:AsyncSession = Depends(get_async_db)):
+async def delete_user(user_id: int, db:AsyncSession = Depends(get_async_db)):
     """
     Удаление новости
     """
